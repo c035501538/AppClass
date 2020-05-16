@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="utf-8">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  
+
+  
+
+  <!-- Bootstrap core CSS -->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+  <!-- Custom styles for this template -->
+  <link href="css/clean-blog.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+
+
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('images/back.jpeg')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+            <h1>ABOUT tensorflow</h1>
+            <span class="subheading">This is what I learn.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <p class="indent"style="font-family:微軟正黑體;">這是用來記錄初次接觸Tensorflow並且進行深度運算的程式>。</p>
+        <p class="indent"style="font-family:微軟正黑體;">程式碼:</p>
+        <p class="indent"style="font-family:微軟正黑體;">
+            import tensorflow as tf<br>
+            import cv2<br>
+            import os<br>
+            import numpy<br>
+            os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'<br>
+            mnist = tf.keras.datasets.mnist<br>
+            (x_train, y_train), (x_test, y_test) = mnist.load_data()<br>
+            x_train, x_test = x_train / 255.0, x_test / 255.0<br>
+            print("y_train[:10]=",y_train[:10])<br>
+            model = tf.keras.models.Sequential([<br>
+              tf.keras.layers.Flatten(input_shape=(28, 28),autocast=False),<br>
+              tf.keras.layers.Dense(128, activation='relu',autocast=False),<br>
+              <br>
+             # tf.keras.layers.Dense(10,activation='softmax')<br>
+              tf.keras.layers.Dense(10)<br>
+            ])<br>
+            predictions = model(x_train[:1]).numpy()<br>
+            #print("predictions=",predictions)<br>
+            predictions_softmax=tf.nn.softmax(predictions).numpy()<br>
+            print("predictions_softmax=",predictions_softmax)<br>
+            <br>
+            loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)<br>
+            loss_test= loss_fn(y_train[:1], predictions).numpy()<br>
+            <br>
+            print(loss_test)<br>
+            <br>
+            model.compile(optimizer='adam',<br>
+                          loss=loss_fn,<br>
+                          metrics=['accuracy'])<br>
+            model.fit(x_train, y_train, epochs=5)</p><br>
+    </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <ul class="list-inline text-center">
+
+            <li class="list-inline-item">
+              <a href="https://www.facebook.com/">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-facebook-f fa-stack-1x fa-inverse"></i>
+                </span>
+              </a>
+            </li>
+            <li class="list-inline-item">
+              <a href="https://github.com/leoliu5168/Team-1">
+                <span class="fa-stack fa-lg">
+                  <i class="fas fa-circle fa-stack-2x"></i>
+                  <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                  
+                </span>
+              </a>
+            </li>
+          </ul>
+          <p class="copyright text-muted">Copyright &copy;中原大學APP網頁應用第一組</p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="js/clean-blog.min.js"></script>
+
+</body>
+
+</html>
+
+
+import tensorflow as tf
+import cv2
+import os
+import numpy
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+mnist = tf.keras.datasets.mnist
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
+x_train, x_test = x_train / 255.0, x_test / 255.0
+print("y_train[:10]=",y_train[:10])
+model = tf.keras.models.Sequential([
+  tf.keras.layers.Flatten(input_shape=(28, 28),autocast=False),
+  tf.keras.layers.Dense(128, activation='relu',autocast=False),
+
+ # tf.keras.layers.Dense(10,activation='softmax')
+  tf.keras.layers.Dense(10)
+])
+predictions = model(x_train[:1]).numpy()
+#print("predictions=",predictions)
+predictions_softmax=tf.nn.softmax(predictions).numpy()
+print("predictions_softmax=",predictions_softmax)
+
+loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+loss_test= loss_fn(y_train[:1], predictions).numpy()
+
+print(loss_test)
+
+model.compile(optimizer='adam',
+              loss=loss_fn,
+              metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=5)
